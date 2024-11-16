@@ -11,7 +11,7 @@ const port = 3001;
 
 const limiter = rateLimit({
 	windowMs: 60 * 1000, // 1 minute
-	limit: 10, // Limit each IP to 100 requests per `window` (here, per 1 minutes).
+	limit: 100, // Limit each IP to 100 requests per `window` (here, per 1 minutes).
 });
 
 const compressionOptions = {

@@ -1,4 +1,6 @@
 import { StatusCodes } from 'http-status-codes';
+import pino from 'pino';
+
 import userService from '../services/user.service';
 
 // Status constants for success and failure
@@ -6,6 +8,9 @@ const STATUS = {
     success: 'OK',
     failure: 'NO'
 };
+
+// Logger const for pino
+const logger = pino();
 
 /**
  * Updates a user by their ID with new details.
@@ -19,6 +24,7 @@ const updateUser = (req, res) => {
     const updatedUser = userService.updateUser(id, user);
 
     if (updatedUser) {
+        logger.info(`Updating userId: ${id}`);
         return res.status(StatusCodes.OK).send({
             status: STATUS.success,
             message: updatedUser
@@ -40,6 +46,8 @@ const updateUser = (req, res) => {
 const addedUser = (req, res) => {
     const { body: user } = req;
     const addedUser = userService.addUser(user);
+
+    logger.info('Creating user');
 
     return res.status(StatusCodes.CREATED).send({
         status: STATUS.success,
@@ -75,6 +83,7 @@ const getUser = (req, res) => {
     const id = parseInt(req.params.id, 10);
     const user = userService.getUser(id);
     if (user) {
+        logger.info(`Getting user ${id}`)
         return res.status(StatusCodes.OK).send({
             status: STATUS.success,
             user
@@ -99,6 +108,7 @@ const deleteUser = (req, res) => {
     const user = userService.getUser(id);
     if (user) {
         userService.removeUser(id);
+        logger.info(`Deleting userId: ${id}`)
         return res.status(StatusCodes.OK).send({
             status: STATUS.success,
             message: `User id: ${id} deleted`
