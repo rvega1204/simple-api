@@ -5,13 +5,14 @@ import mainRoutes from './main.routes';
 import userRoutes from './user.routes';
 import { rateLimit } from 'express-rate-limit';
 import compression from 'compression';
+import cors from 'cors';
 
 const app = express();
-const port = 3001;
+const port = 4000;
 
 const limiter = rateLimit({
 	windowMs: 60 * 1000, // 1 minute
-	limit: 100, // Limit each IP to 100 requests per `window` (here, per 1 minutes).
+	limit: 100, // Limit each IP to 100 requests per `window` (here, per 1 minute).
 });
 
 const compressionOptions = {
@@ -40,6 +41,18 @@ app.use(express.json());
  * Helmet helps secure the app by setting various HTTP headers.
  */
 app.use(helmet());
+
+/**
+ * Middleware to enable Cross-Origin Resource Sharing (CORS).
+ * CORS allows the server to specify which domains, HTTP methods, and headers 
+ * are permitted when accessing the resources from a different origin.
+ * 
+ * By default, this will allow all origins to access the API.
+ * If stricter rules are needed, options can be passed to the `cors` function.
+ * 
+ * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS} for more details on CORS.
+ */
+app.use(cors());
 
 /**
  * Defines the route for the main API version.
