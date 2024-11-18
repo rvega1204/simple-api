@@ -5,8 +5,8 @@ import userService from '../services/user.service';
 
 // Status constants for success and failure
 const STATUS = {
-    success: 'OK',
-    failure: 'NO'
+    success: true,
+    failure: false
 };
 
 // Logger const for pino
